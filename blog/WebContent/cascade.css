@@ -1,0 +1,26 @@
+@charset "UTF-8";
+*{
+	margin: 0;
+	padding: 0;
+}
+html,body{
+	height: 100%;
+}
+.outer-wrap{
+	height: 100%;
+	position: relative;
+}
+.login-panel{
+	width: 400px;
+	height: 200px;
+	position: absolute;
+/*	top: 50%;
+	margin: -100px auto;
+	*/
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: auto;
+	background-color: lightgreen;
+}

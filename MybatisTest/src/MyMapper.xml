@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+通过 TestCla	tc = session.selectOne("MyMapper.select_test", 1);来访问执行sql
+selectOne(namespqce.id, parameters);返回 resultType类型
+  -->
+<mapper namespace="MyMapper">
+<select id="select_test" resultType="example.mybatits.TestCla">
+select * from testdata where id = #{id}
+</select>
+</mapper>
