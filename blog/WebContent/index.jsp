@@ -43,7 +43,7 @@
 	layui.use('layer', function(){
 		var layer = layui.layer;
 		layer.msg("<%=loginResult%>", {
-			timeout: 1000,
+			time: 1000,
 			icon: 2
 		});
 	});              
