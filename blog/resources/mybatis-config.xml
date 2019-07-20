@@ -20,5 +20,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <mapper class="com.smileintheworld.blog.mapper.BlogMapper"></mapper>
 <mapper class="com.smileintheworld.blog.mapper.CategoryMapper"></mapper>
 <mapper class="com.smileintheworld.blog.mapper.CommentMapper"></mapper>
+<mapper class="com.smileintheworld.blog.mapper.UsersMapper"></mapper>
 </mappers>
 </configuration>

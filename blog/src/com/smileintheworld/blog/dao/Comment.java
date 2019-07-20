@@ -1,13 +1,24 @@
 package com.smileintheworld.blog.dao;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Id;
 
-public class Comment {
+public class Comment extends BaseDao {
 	@Id
 	int id;
 	String username;
 	String content;
+	Timestamp time;
 	int blog_id;
+
+	
+	public Timestamp getTime() {
+		return time;
+	}
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
 	public int getId() {
 		return id;
 	}

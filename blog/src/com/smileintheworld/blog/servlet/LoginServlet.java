@@ -9,10 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.smileintheworld.blog.dao.Users;
+import com.smileintheworld.blog.mapper.UsersMapper;
+
 /**
  * Servlet implementation class LoginServlet
  */
-@WebServlet("/LoginServlet")
+@WebServlet("/Login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -28,23 +31,35 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		//response.getWriter().append("Served at: ").append(request.getContextPath());
+		HttpSession session = request.getSession();
+		
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		System.out.println("username:" + username+"\tpassword:"+password);
 
-		HttpSession session = request.getSession();
 		if(null == username  || null == password) {
 			session.setAttribute("loginResult", "user name or password is null");
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		}else {
-			if(username.equals("eolin") && password.equals("123456")) {
-				session.setAttribute("loginResult", "login success");
-				request.getRequestDispatcher("/self/overview.jsp").forward(request, response);
-			}else {
-				session.setAttribute("loginResult", "user name or password doesn't match");
+			Users ud= new Users();
+			UsersMapper umap = ud.openSqlSession().getMapper(UsersMapper.class);
+			ud.setUsername(username);
+			Users user = umap.selectOne(ud);
+			ud.closeSqlSession(); //must close the sqlSession
+			System.out.println(user);
+			if(null == user) {
+				session.setAttribute("loginResult", "user dosen't exist");
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			}else {
+				if(username.equals(user.getUsername()) && password.equals(user.getPassword())) {
+					session.setAttribute("user_id", user.getId());
+					session.setAttribute("username", username);
+					session.setAttribute("loginResult", "login success");
+					response.sendRedirect(request.getContextPath()+"/self/overview.jsp");
+				}else {
+					session.setAttribute("loginResult", "user name or password doesn't match");
+					request.getRequestDispatcher("/index.jsp").forward(request, response);
+				}
 			}
 		}
 	}
