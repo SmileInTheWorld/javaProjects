@@ -14,7 +14,14 @@ public class Blog extends BaseDao {
 	Timestamp created_time;
 	Integer category_id;
 	Integer user_id;
+	Users user;
 	
+	public Users getUser() {
+		return user;
+	}
+	public void setUser(Users user) {
+		this.user = user;
+	}
 	public Integer getUser_id() {
 		return user_id;
 	}
@@ -53,8 +60,8 @@ public class Blog extends BaseDao {
 	}
 	@Override
 	public String toString() {
-		return "{id="+id+",created_time="+created_time+",title="+title+",category_id"+
-				category_id+",content="+content+"}";
+		return "Blog [id=" + id + ", title=" + title + ", content=" + content + ", created_time=" + created_time
+				+ ", category_id=" + category_id + ", user_id=" + user_id + ", user=" + user + "]";
 	}
 	
 }

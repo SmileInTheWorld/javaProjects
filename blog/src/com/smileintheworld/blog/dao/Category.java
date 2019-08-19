@@ -34,7 +34,8 @@ public class Category extends BaseDao {
 	}
 	@Override
 	public String toString() {
-		return"{id="+id+",name="+name+",level="+level+"}"; 
+		return "Category [id=" + id + ", name=" + name + ", level=" + level + "]";
 	}
+	
 	
 }

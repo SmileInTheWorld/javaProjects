@@ -6,7 +6,7 @@ import javax.persistence.Id;
 
 public class Comment extends BaseDao {
 	@Id
-	int id;
+	Integer id;
 	String username;
 	String content;
 	Timestamp time;
@@ -19,10 +19,10 @@ public class Comment extends BaseDao {
 	public void setTime(Timestamp time) {
 		this.time = time;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getUsername() {
@@ -45,6 +45,8 @@ public class Comment extends BaseDao {
 	}
 	@Override
 	public String toString() {
-		return "{id="+id+",blog_id="+blog_id+",username="+username+",content="+content+"}";
+		return "Comment [id=" + id + ", username=" + username + ", content=" + content + ", time=" + time + ", blog_id="
+				+ blog_id + "]";
 	}
+	
 }

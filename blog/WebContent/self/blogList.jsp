@@ -63,6 +63,7 @@
 	layui.use(['jquery','table'], function(){
 		var $ = layui.$;
 		var laytable = layui.table;
+		var layer = layui.layer;
 		
 		//监听click事件，并render对应table
 		$("#side-nav li").click(function(){
@@ -92,15 +93,17 @@
 			var blog_id = obj.data.id;
 			switch(obj.event){
 				case "detail":
-						$.get("<%=cpath%>/BlogList?method=to_showblog&blog_id=" +blog_id);
+						window.location.href="<%=cpath%>/BlogList?method=to_showblog&blog_id=" +blog_id;
 					break;
 				case "edit":
-						$.get("<%=cpath%>/BlogList?method=to_showblog&blog_id=" +blog_id);
+						window.location.href="<%=cpath%>/AddBlog?method=to_updateblog&blog_id=" +blog_id;
 					break;
 				case "del":
-						$.get("<%=cpath%>/BlogList?method=to_showblog&blog_id=" +blog_id,
-								function(data, status){
-							
+						$.get("<%=cpath%>/AddBlog?method=delete_blog&blog_id=" +blog_id, function(data, status){
+							if("success" == status && "delete success"){
+								obj.del();
+							}else{
+							}
 						});
 					break;
 				default:

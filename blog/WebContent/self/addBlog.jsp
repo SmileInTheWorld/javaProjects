@@ -27,11 +27,11 @@
 	<div class="layui-body">
     <!-- 内容主体区域 -->
     <div style="padding: 15px;">
-		<form class="layui-form" method="post" action="<%=cpath%>/AddBlog">
+		<form class="layui-form" lay-filter="addblog" method="post" action="<%=cpath%>/AddBlog">
 			<div class="layui-form-item">
 				<label class="layui-form-label">标题</label>
     			<div class="layui-input-inline">
-    				<input name="title" type="text" name="username" lay-verify="required" lay-reqtext="标题不能为空" placeholder="请输入标题" autocomplete="off" class="layui-input">
+    				<input name="title" type="text"  lay-verify="required" lay-reqtext="标题不能为空" placeholder="请输入标题" autocomplete="off" class="layui-input">
     			</div>
     		</div>
 			<div class="layui-form-item">
@@ -50,7 +50,7 @@
   			</div>
   			<div class="layui-form-item">
   				<div class="layui-input-block">
-  					<input name = "method" style="display:none" value="insert" />
+  					<input name = "method" style="display:none" value="insert_blog" />
   					<button class="layui-btn" lay-submit lay-filter="save">保存</button>
   					<button type="reset" class="layui-btn layui-btn-primary">重置</button>
   				</div>
@@ -80,10 +80,12 @@ layui.use(['form', 'layedit', 'jquery'], function(){
   layedit.build('content'); //建立编辑器
   //layform.render('select','category');
   layform.render();
+  /*
   layform.on('submit(save)', function(data){
 	  console.log(data.form);
 	  console.log(data.field);
   });
+  */
 });
 </script>
 </body>

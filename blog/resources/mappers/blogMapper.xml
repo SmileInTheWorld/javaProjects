@@ -6,8 +6,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 通过 TestCla	tc = session.selectOne("MyMapper.select_test", 1);来访问执行sql
 selectOne(namespqce.id, parameters);返回 resultType类型
   -->
-<mapper namespace="com.smileintheworld.blog.dao.BlogMapper">
+<mapper namespace="com.smileintheworld.blog.mapper.BlogMapper">
 <select id="querryAll" resultType="com.smileintheworld.blog.dao.Blog">
-select * from blog 
 </select>
+<select id="selectBlogListByCategoryId" resultMap="blogResult">
+	select 
+	blog.id as blog_id,
+	blog.title as blog_title,
+	blog.created_time as blog_created_time,
+	users.id as user_id,
+	users.username as user_username
+	from blog join users on users.id=blog.user_id 
+	where category_id = #{category_id} limit #{offset},#{limit};
+</select>
+<resultMap id="blogResult" type="Blog">
+  <id property="id" column="blog_id"/>
+  <result property="id" column="blog_id" />
+  <result property="title" column="blog_title"/>
+  <result property="created_time" column="blog_created_time"/>
+  <association property="user" column="user_name" javaType="Users" resultMap="userResult"/>
+</resultMap>
+
+<resultMap id="userResult" type="Users">
+  <id property="id" column="user_id"/>
+ <result property="username" column="user_username"/> 
+</resultMap>
 </mapper>

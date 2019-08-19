@@ -2,6 +2,7 @@ package com.smileintheworld.blog.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -22,7 +23,6 @@ import com.smileintheworld.blog.mapper.BlogMapper;
 import com.smileintheworld.blog.mapper.CategoryMapper;
 
 import tk.mybatis.mapper.entity.Example;
-import tk.mybatis.mapper.entity.Example.Criteria;
 
 /**
  * Servlet implementation class BlogListServlet
@@ -57,58 +57,57 @@ public class BlogListServlet extends HttpServlet {
 				toBlogListPage(request, response);
 				break;
 			case "show_bloglist":
-				String category_id_str = request.getParameter("category_id");
-				String page = request.getParameter("page");
-				String limit = request.getParameter("limit");
-				String blognum = request.getParameter("blognum");
-				
-				if(null != category_id_str && null != page 
-						&& null != limit && null != blognum) {
-					Blog bd = new Blog();
-					BlogMapper bmap = bd.openSqlSession().getMapper(BlogMapper.class);
-					Example example = new Example(Blog.class);
-					Criteria criteria = example.createCriteria();
-					
-					example.setOrderByClause("created_time DESC");
-					bmap.selectByExampleAndRowBounds(example, new RowBounds(
-							Integer.parseInt(page)*Integer.parseInt(limit),
-							Integer.parseInt(limit)));
-					bd.closeSqlSession();
-					/*json*/
-					JsonObject root = new JsonObject();
-					root.addProperty("code", 0);
-					root.addProperty("message", "success");
-					root.addProperty("count", 1000);
-					JsonArray  data = new JsonArray();
-					JsonObject subdata = new JsonObject();
-					subdata.addProperty("title", "qqq");
-					subdata.addProperty("id", 7);
-					subdata.addProperty("created_time", "20190803");
-					subdata.addProperty("user", "eolin");
-					data.add(subdata);
-					subdata = new JsonObject();
-					subdata.addProperty("title", "123");
-					subdata.addProperty("id", 4);
-					subdata.addProperty("created_time", "20190804");
-					subdata.addProperty("user", "admin");
-					data.add(subdata);
-					subdata = new JsonObject();
-					root.add("data", data);
-					Gson g = new Gson();
-					String jstr = g.toJson(root);
-					System.out.println(jstr);
-					response.setContentType("contentType:application/json charset:UTf-8");
-					PrintWriter out = response.getWriter();
-					out.print(jstr);
-					out.close();
-				}
+				showBlogList(request, response);
 				break;
 			default:
 				response.sendError(400, "the value of method:  " + method + ", unsupported !");
 				break;
 			}
 		}catch(NullPointerException e){
+			e.printStackTrace();
 			response.sendError(400,"parameter (method) not found !");
+		}
+	}
+
+	private void showBlogList(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String category_id_str = request.getParameter("category_id");
+		String page_str = request.getParameter("page");
+		String limit_str = request.getParameter("limit");
+		String blognum_str = request.getParameter("blognum");
+		
+		if(null != category_id_str && null != page_str 
+				&& null != limit_str && null != blognum_str) {
+				Blog bd = new Blog();
+				BlogMapper bmap = bd.openSqlSession().getMapper(BlogMapper.class);
+				List<Blog> bl = bmap.selectBlogListByCategoryId(Integer.parseInt(category_id_str)
+						,(Integer.parseInt(page_str)-1)*Integer.parseInt(limit_str),Integer.parseInt(limit_str));
+				bd.closeSqlSession();
+				/*json*/
+				JsonObject root = new JsonObject();
+				root.addProperty("code", 0);
+				root.addProperty("message", "success");
+				root.addProperty("count", Integer.parseInt(blognum_str));
+				JsonArray  data = new JsonArray();
+				JsonObject subdata = null;
+				for(Blog e : bl) {
+					subdata = new JsonObject();
+					subdata.addProperty("title", e.getTitle());
+					subdata.addProperty("id", e.getId());
+					subdata.addProperty("created_time", 
+							new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(e.getCreated_time()));
+					subdata.addProperty("user", e.getUser().getUsername());
+					data.add(subdata);
+				}
+				root.add("data", data);
+				Gson g = new Gson();
+				String jstr = g.toJson(root);
+				System.out.println(jstr);
+				response.setContentType("contentType:application/json charset:UTf-8");
+				PrintWriter out = response.getWriter();
+				out.print(jstr);
+				out.close();
+		}else {
+			response.sendError(400,"parameter error !");
 		}
 	}
 

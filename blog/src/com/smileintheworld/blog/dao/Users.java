@@ -6,7 +6,7 @@ import javax.persistence.Id;
 
 public class Users extends BaseDao {
 	@Id
-	int id;
+	Integer id;
 	Timestamp register_time;
 	String username;
 	String password;
@@ -20,10 +20,10 @@ public class Users extends BaseDao {
 	public void setRegister_time(Timestamp register_time) {
 		this.register_time = register_time;
 	}
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getUsername() {
@@ -52,8 +52,8 @@ public class Users extends BaseDao {
 	}
 	@Override
 	public String toString() {
-		return "{id: " + id + ", username: " + username + ", password: " + password
-				+ ", phone_number: " + phone_number + ", email: " +email + "}"; 
+		return "Users [id=" + id + ", register_time=" + register_time + ", username=" + username + ", password="
+				+ password + ", phone_number=" + phone_number + ", email=" + email + "]";
 	}
 	
 }
